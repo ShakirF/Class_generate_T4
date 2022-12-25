@@ -32,12 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="HiNetCloud.System.Data.Entity.Design.PluralizationServices" Version="22.12.18.9" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.1" />
     <PackageReference Include="NETStandard.Library" Version="2.0.3">
       <GeneratePathProperty>True</GeneratePathProperty>
     </PackageReference>
-    <PackageReference Include="Pluralize.NET" Version="1.0.2" />
-	  <Reference Include="netstandard" />
+    <PackageReference Include="PluralizeService.Core" Version="1.2.21147.2" />
+	  
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,13 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name ="D:\c#_project\Class_generate_T4\Class_generate_T4\bin\Debug\net7.0\Pluralize.NET.dll" #>
 <#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data.Entity.Design" #>
 <#@ assembly name="System.Data" #>
 <#@ import namespace="System.Data"#>
 <#@ import namespace="System.Linq" #>  
 <#@ import namespace="System.Data.SqlClient"#>
 <#@ import namespace="System.Text" #>
-<#@ import namespace="Pluralize.NET"#>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.Entity.Design.PluralizationServices" #>
 <#@ output extension=".cs" #>
 namespace Class_generate_T4.Models;
 
@@ -22,8 +22,7 @@ namespace Class_generate_T4.Models;
    List<string> tables = new List<string>();
    foreach (DataRow row in dataTable.Rows)
    {
-    IPluralize pluralizer = new Pluralizer();
-       string tablename =  pluralizer.Singularize((string)row[0]);
+       string tablename =(string)row[0];
        tables.Add(tablename);
    }
    sqlConnection.Close();
@@ -35,27 +34,27 @@ public class <#=tableName.Replace(" ","")#>
 
 <#  
 adapter = new SqlDataAdapter($@"SELECT CONCAT(
-                 'public ',
-                 IIF(DATA_TYPE = 'nvarchar', 'string' +         (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'uniqueidentifier', 'string' + (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'ntext', 'string' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'nchar', 'string' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'int', 'int' +                 (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'smallint', 'short' +          (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'tinyint', 'byte' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'money', 'decimal' +           (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'real', 'decimal' +           (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'float', 'float' +             (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'decimal', 'decimal' +         (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'bit', 'bool' +                (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'datetime', 'DateTime' +       (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'date', 'DateTime' +           (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'datetime2', 'DateTime' +      (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 IIF(DATA_TYPE = 'image', 'byte[]' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
-                 ' ',
-                 COLUMN_NAME,
-                 ' {{ get; set; }}' 
-                 + (IIF((DATA_TYPE = 'nvarchar' or DATA_TYPE = 'nchar') and (IS_NULLABLE = 'NO'), ' = null!;', ''))
+      'public ',
+      IIF(DATA_TYPE = 'nvarchar', 'string' +         (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'uniqueidentifier', 'string' + (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'ntext', 'string' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'nchar', 'string' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'int', 'int' +                 (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'smallint', 'short' +          (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'tinyint', 'byte' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'money', 'decimal' +           (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'real', 'decimal' +           (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'float', 'float' +             (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'decimal', 'decimal' +         (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'bit', 'bool' +                (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'datetime', 'DateTime' +       (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'date', 'DateTime' +           (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'datetime2', 'DateTime' +      (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      IIF(DATA_TYPE = 'image', 'byte[]' +            (IIF(IS_NULLABLE = 'YES', '?', '')), ''),
+      ' ',
+      COLUMN_NAME,
+      ' {{ get; set; }}' 
+      + (IIF((DATA_TYPE = 'nvarchar' or DATA_TYPE = 'nchar') and (IS_NULLABLE = 'NO'), ' = null!;', ''))
              )
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME = N'{tableName}'
